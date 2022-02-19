@@ -1,18 +1,18 @@
 import { FC, useState, useEffect } from 'react'
 import { S } from './style'
-import memoryGame from '../assets/gamesImg/memoryGame.png'
-import durakGame from '../assets/gamesImg/durakGame.png'
-import ticTacToeGame from '../assets/gamesImg/ticTacToeGame.png'
+import memoryGameImg from '../assets/gamesImg/memoryGame.png'
+import durakGameImg from '../assets/gamesImg/durakGame.png'
+import ticTacToeGameImg from '../assets/gamesImg/ticTacToeGame.png'
 import { bindedPageVariants } from '../common/framerMotionVariants'
-import memoryImg from '../assets/gamesIcon/memory.png'
-import cardsImg from '../assets/gamesIcon/cards.svg'
-import ticTacToeImg from '../assets/gamesIcon/ticTacToe.svg'
+import memoryIcon from '../assets/gamesIcon/memory.png'
+import cardsIcon from '../assets/gamesIcon/cards.svg'
+import ticTacToeIcon from '../assets/gamesIcon/ticTacToe.svg'
 import { useSwipeable } from 'react-swipeable'
 
 const gameLinks = [
-  { id: 0, link: '/memoryGame', gameImg: memoryGame, title: 'Memory Game', decorIcon: memoryImg },
-  { id: 1, link: '/durakGame', gameImg: durakGame, title: 'Durak Game', decorIcon: cardsImg },
-  { id: 2, link: '/ticTacToeGame', gameImg: ticTacToeGame, title: 'Tic Tac Toe Game', decorIcon: ticTacToeImg },
+  { id: 0, link: '/memoryGame', gameImg: memoryGameImg, title: 'Memory Game', decorIcon: memoryIcon },
+  { id: 1, link: '/durakGame', gameImg: durakGameImg, title: 'Durak Game', decorIcon: cardsIcon },
+  { id: 2, link: '/ticTacToeGame', gameImg: ticTacToeGameImg, title: 'Tic Tac Toe Game', decorIcon: ticTacToeIcon },
 ]
 
 const Intro: FC = () => {
@@ -22,7 +22,6 @@ const Intro: FC = () => {
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (currentSlide < 2) setCurrentSlide(currentSlide + 1)
-
     },
     onSwipedRight: () => {
       if (currentSlide > 0) setCurrentSlide(currentSlide - 1)
@@ -45,8 +44,8 @@ const Intro: FC = () => {
       {typeof isMobile === 'boolean' && (
         <S.Intro {...bindedPageVariants} >
           <S.IntroTitle>Select Game</S.IntroTitle>
-          <S.IntroContent>
-            <S.Games
+          <S.IntroInner>
+            <S.GamesCards
               {...handlers}
               initial={{ x: 0 }}
               animate={
@@ -61,16 +60,18 @@ const Intro: FC = () => {
               }}
             >
               {gameLinks.map(({ title, gameImg, link, decorIcon, id }) => (
-                <S.GameWrapper animate={isMobile ? { scale: id === currentSlide ? 1 : 0.9 } : undefined}>
+                <S.GameCard
+                  animate={isMobile ? { scale: id === currentSlide ? 1 : 0.9 } : undefined}
+                  key={id}>
                   <S.GameLink to={link} key={id}>
                     <S.GameImg src={gameImg} alt={title} />
                     <S.GameTitle>{title}</S.GameTitle>
                     <S.Decor><img src={decorIcon} /></S.Decor>
                   </S.GameLink>
-                </S.GameWrapper>
+                </S.GameCard>
               ))}
-            </S.Games>
-          </S.IntroContent>
+            </S.GamesCards>
+          </S.IntroInner>
         </S.Intro>
       )}
     </>
